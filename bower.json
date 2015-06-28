@@ -4,19 +4,17 @@
   "authors": [
     "Viktor Dakalov <atlantidu@gmail.com>"
   ],
+  "moduleType": "globals",
   "description": "Реализация некоторых полезных функций из Groovy на Javascript",
   "main": "src/groovyjs.js",
   "keywords": [
     "javascript",
     "groovy"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vdakalov/groovyjs"
+  },
   "license": "MIT",
-  "homepage": "https://github.com/vdakalov/groovyjs",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+  "homepage": "https://github.com/vdakalov/groovyjs"
 }
