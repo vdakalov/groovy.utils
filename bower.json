@@ -1,6 +1,6 @@
 {
   "name": "groovy.utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Viktor Dakalov <atlantidu@gmail.com>"
   ],
@@ -16,5 +16,9 @@
     "url": "https://github.com/vdakalov/groovyjs"
   },
   "license": "MIT",
-  "homepage": "https://github.com/vdakalov/groovyjs"
+  "homepage": "https://github.com/vdakalov/groovyjs",
+  "ignore": [
+    "package.json",
+    ".gitignore"
+  ]
 }
