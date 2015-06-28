@@ -1,43 +1,42 @@
 
-(function(context){
+(function(scope){
 
     /**
      * Коллекция
-     * Функции будут работать правильно, если в качестве
-     * коллеции передать этот тип
+     * функции будут работать правильно, если в качестве коллеции передать этот тип
      *
      * @typedef {Array|FileList|HTMLCollection|NodeList|Object} Collection
      */
 
     /**
      * @callback each_handler
-     * @param {*} value Value of each object element
-     * @param {String} key Key of each object element
-     * @param {Number} index Iteration index
+     * @param {*} value Значение элемента коллекции
+     * @param {String} key Ключь элемента коллекции
+     * @param {Number} index Интекс итерации
      */
 
     /**
      * @callback grep_handler
-     * @param {*} value Value of each object element
-     * @param {String} key Key of each object element
-     * @param {Number} index Iteration index
+     * @param {*} value Значение элемента коллекции
+     * @param {String} key Ключь элемента коллекции
+     * @param {Number} index Интекс итерации
      * @return {Boolean}
      */
 
     /**
      * @callback collect_handler
-     * @param {*} value Value of each object element
-     * @param {String} key Key of each object element
-     * @param {Number} index Iteration index
+     * @param {*} value Значение элемента коллекции
+     * @param {String} key Ключь элемента коллекции
+     * @param {Number} index Интекс итерации
      * @return {*}
      */
 
     /**
      * @callback collectEntries_handler
-     * @param {*} value Value of each object element
-     * @param {String} key Key of each object element
-     * @param {Number} index Iteration index
-     * @return {Boolean|Array} where first item is key, and two is value. If false, then exclude value
+     * @param {*} value Значение элемента коллекции
+     * @param {String} key Ключь элемента коллекции
+     * @param {Number} index Интекс итерации
+     * @return {Boolean|Array} массив как [КЛЮЧ, ЗНАЧЕНИЕ] или false для исключения элемента из новой коллекции
      */
 
     /**
@@ -66,7 +65,7 @@
      * @param {each_handler} handler Обработчик
      * @return {Collection}
      */
-    context.each = function(obj, context, handler) {
+    scope.each = function(obj, context, handler) {
         var index = 0, name;
 
         if (arguments.length === 1) {
@@ -105,7 +104,7 @@
      * @param {grep_handler} handler Обработчик
      * @returns {Object|Array} Вернет элементы в новой коллекции являющейся либо массивом, либо объектом.
      */
-    context.grep = function (obj, context, handler) {
+    scope.grep = function (obj, context, handler) {
         var isArr, list;
 
         if (arguments.length === 1) {
@@ -121,7 +120,7 @@
 
         list = (isArr = obj instanceof Array) ? [] : {};
 
-        this.each(obj, context, function(value, key, index) {
+        scope.each(obj, context, function(value, key, index) {
             if (handler.call(context, value, key, index) !== false) {
                 isArr ? list.push(value) : list[key] = value;
             }
@@ -147,7 +146,7 @@
      * @param {collect_handler} handler Обработчик
      * @returns {Object|Array} Вернет новый массив или объект с новыми значениями
      */
-    context.collect = function (obj, context, handler) {
+    scope.collect = function (obj, context, handler) {
         var isArr, list;
 
         if (arguments.length === 1) {
@@ -163,7 +162,7 @@
 
         list = (isArr = obj instanceof Array) ? [] : {};
 
-        this.each(obj, context, function(value, key, index) {
+        scope.each(obj, context, function(value, key, index) {
             if ((list[key] = handler.call(context, value, key, index)) === false) {
                 isArr ? (list.splice(key, 1)) : (delete list[key]);
             }
@@ -186,7 +185,7 @@
      * @param {collectEntries_handler} handler
      * @returns {Array|Object}
      */
-    context.collectEntries = function (obj, context, handler) {
+    scope.collectEntries = function (obj, context, handler) {
         var list, result, isArr;
 
         if (arguments.length === 1) {
@@ -201,7 +200,7 @@
         }
 
         list = (isArr = obj instanceof Array) ? [] : {};
-        this.each(obj, context, function(value, key, index) {
+        scope.each(obj, context, function(value, key, index) {
             result = handler.call(context, value, key, index);
             if (result !== false) {
                 list[result[0]] = result[1];
