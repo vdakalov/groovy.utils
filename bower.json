@@ -5,7 +5,7 @@
     "Viktor Dakalov <atlantidu@gmail.com>"
   ],
   "description": "Реализация некоторых полезных функций из Groovy на Javascript",
-  "main": "index.js",
+  "main": "src/groovyjs.js",
   "keywords": [
     "javascript",
     "groovy"
