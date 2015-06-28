@@ -1,0 +1,22 @@
+{
+  "name": "groovyjs",
+  "version": "0.0.1",
+  "authors": [
+    "Viktor Dakalov <atlantidu@gmail.com>"
+  ],
+  "description": "Реализация некоторых полезных функций из Groovy на Javascript",
+  "main": "index.js",
+  "keywords": [
+    "javascript",
+    "groovy"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/vdakalov/groovyjs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
