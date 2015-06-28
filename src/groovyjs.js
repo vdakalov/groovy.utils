@@ -2,6 +2,14 @@
 (function(context){
 
     /**
+     * Коллекция
+     * Функции будут работать правильно, если в качестве
+     * коллеции передать этот тип
+     *
+     * @typedef {Array|FileList|HTMLCollection|NodeList|Object} Collection
+     */
+
+    /**
      * @callback each_handler
      * @param {*} value Value of each object element
      * @param {String} key Key of each object element
@@ -33,30 +41,30 @@
      */
 
     /**
-     * Call handler in context for each item in object or array
-     * Return received object or array
+     * Вызовет обработчик для каждого элемента коллекции в заданном
+     * контексте и вернет исходный объект
      *
      * @example
-     * // output: 1, "0", 0
-     * // returns: [1]
+     * // выведет: 1, "0", 0
+     * // вернет: [1]
      * each([1], function(value, key, index){ console.log(value, key, index); });
      *
-     * // output: 10, "a", 0
+     * // выведет: 10, "a", 0
      * //        20, "b", 1
-     * // returns: {a: 10, b: 20}
+     * // вернет: {a: 10, b: 20}
      * var myEach = each.bind({a: 10, b: 20});
      * myEach(function(value, key, index){ console.log(value, key, index); });
      *
-     * // output: 4, "0", 0
+     * // выведет: 4, "0", 0
      * //         8, "1", 1
      * //         12, "2", 2
-     * // returns: [1,2,3]
+     * // вернет: [1,2,3]
      * each([1,2,3], {multiply: 4}, function(value, key, index){ console.log(value * this.multiply, key, index); });
      *
-     * @param {Array|Object|each_handler} obj
-     * @param {*} [context=this]
-     * @param {each_handler} handler
-     * @return {Array|Object}
+     * @param {Collection|each_handler} obj Коллекция элементов или обработчик (если коллекция в контексте функции)
+     * @param {*} [context=this] Контекст, в котором обработчик будет вызываться
+     * @param {each_handler} handler Обработчик
+     * @return {Collection}
      */
     context.each = function(obj, context, handler) {
         var index = 0, name;
@@ -86,17 +94,16 @@
     };
 
     /**
-     * Similar to the previous function except that it returns an object
-     * containing the elements on which the handler returned truth.
+     * Отфильтрует элементы коллекции
      *
      * @example:
-     * // returns: [2]
+     * // вернет: [2]
      * grep([1,2,3], function(n){ return (n%2) === 0 });
      *
-     * @param {Object|Array|grep_handler} obj
-     * @param {*} [context=this]
-     * @param {grep_handler} handler
-     * @returns {Object|Array}
+     * @param {Collection|grep_handler} obj Коллекция или обработчик, если коллекция находится в контексте функции
+     * @param {*} [context=this] Контекст, в котором обработчик будет вызываться
+     * @param {grep_handler} handler Обработчик
+     * @returns {Object|Array} Вернет элементы в новой коллекции являющейся либо массивом, либо объектом.
      */
     context.grep = function (obj, context, handler) {
         var isArr, list;
@@ -124,6 +131,9 @@
     };
 
     /**
+     * Вызовет обработчик для каждого элемента коллекции и присвоит
+     * результат этого вызова в элемент
+     *
      * Cause a handler for each element and assigns the result of a call
      * handler in the value of the item. Not only if the handler does
      * not return false, in this case, the element will be removed
@@ -132,10 +142,10 @@
      * // returns: [4]
      * Knee.collect([1,2,3], function(n){ return (n%2) === 0 ? n * 2 : false });
      *
-     * @param {Object|Array|collect_handler} obj
-     * @param {*} [context=this]
-     * @param {collect_handler} handler
-     * @returns {Object|Array}
+     * @param {Collection|collect_handler} obj Коллекция или обработчик, если коллекция находится в контексте функции
+     * @param {*} [context=this] Контекст, в котором обработчик будет вызываться
+     * @param {collect_handler} handler Обработчик
+     * @returns {Object|Array} Вернет новый массив или объект с новыми значениями
      */
     context.collect = function (obj, context, handler) {
         var isArr, list;
@@ -163,20 +173,21 @@
     };
 
     /**
-     * Similarly, the function collect, but will update not only
-     * the value but the key object.
+     * Вызовет обработчик для каждого элемента коллекции. Результат каждого вызова,
+     * если он не является false, будет интерпретироваться как [ключ, значение].
+     * Если результатом вызова будет false, элемент не попадет в новую коллекцию
      *
      * @example:
      * // returns: {A: 1}
      * collectEntries({a:1}, function(value, key){ return [key.toUpperCase(), value]; });
      *
-     * @param {Object|Array|collectEntries_handler} obj
+     * @param {Collection|collectEntries_handler} obj
      * @param {*} [context=this]
      * @param {collectEntries_handler} handler
-     * @returns {Object}
+     * @returns {Array|Object}
      */
     context.collectEntries = function (obj, context, handler) {
-        var list = {}, result;
+        var list, result, isArr;
 
         if (arguments.length === 1) {
             handler = obj;
@@ -189,6 +200,7 @@
             context = this;
         }
 
+        list = (isArr = obj instanceof Array) ? [] : {};
         this.each(obj, context, function(value, key, index) {
             result = handler.call(context, value, key, index);
             if (result !== false) {
