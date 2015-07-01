@@ -1,6 +1,9 @@
 # groovy.utils
 Реализация некоторых полезных функций из Groovy на Javascript
 
+Установка в bower
+`bower install groovy.utils`
+
 Все функции имеют два первых необязательных аргемента.
 Если:
 
