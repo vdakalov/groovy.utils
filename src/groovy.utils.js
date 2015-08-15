@@ -11,14 +11,14 @@
     /**
      * @callback each_handler
      * @param {*} value Значение элемента коллекции
-     * @param {String} key Ключь элемента коллекции
+     * @param {String} key Ключ элемента коллекции
      * @param {Number} index Интекс итерации
      */
 
     /**
      * @callback grep_handler
      * @param {*} value Значение элемента коллекции
-     * @param {String} key Ключь элемента коллекции
+     * @param {String} key Ключ элемента коллекции
      * @param {Number} index Интекс итерации
      * @return {Boolean}
      */
@@ -26,7 +26,7 @@
     /**
      * @callback collect_handler
      * @param {*} value Значение элемента коллекции
-     * @param {String} key Ключь элемента коллекции
+     * @param {String} key Ключ элемента коллекции
      * @param {Number} index Интекс итерации
      * @return {*}
      */
@@ -34,7 +34,7 @@
     /**
      * @callback collectEntries_handler
      * @param {*} value Значение элемента коллекции
-     * @param {String} key Ключь элемента коллекции
+     * @param {String} key Ключ элемента коллекции
      * @param {Number} index Интекс итерации
      * @return {Boolean|Array} массив как [КЛЮЧ, ЗНАЧЕНИЕ] или false для исключения элемента из новой коллекции
      */
