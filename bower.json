@@ -1,22 +1,22 @@
 {
   "name": "groovy.utils",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "authors": [
     "Viktor Dakalov <atlantidu@gmail.com>"
   ],
   "moduleType": "globals",
   "description": "Реализация некоторых полезных функций из Groovy на Javascript",
-  "main": "src/groovyjs.js",
+  "main": "src/groovy.utils.js",
   "keywords": [
     "javascript",
     "groovy"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vdakalov/groovyjs"
+    "url": "https://github.com/vdakalov/groovy.utils"
   },
   "license": "MIT",
-  "homepage": "https://github.com/vdakalov/groovyjs",
+  "homepage": "https://github.com/vdakalov/groovy.utils",
   "ignore": [
     "package.json",
     ".gitignore"
