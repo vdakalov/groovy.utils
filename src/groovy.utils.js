@@ -211,9 +211,8 @@
 
     /**
      * Выводит строку отформатированную в соответствии с указанным форматом
-     * принцип работы похож на функции printf в php или System.out.format в java, только
-     * адаптированный под требования javascript: в троке, в нужные места вставляются ключи
-     * которы заменяются функцией на соответствующие значения из переданных аргументов.
+     * принцип работы похож на функцию printf в php или System.out.format в java, только
+     * адаптированный под требования javascript.
      *
      * Синтаксис ключей
      * %s - без аргументов
@@ -241,7 +240,7 @@
      *  do - как восьмиричное число
      *  dn:from,to - переводит в из указанной системы в указанную систему счисления (по умлочанию 10)
      *
-     * Массивы (аргемент будет привен к массиву, если не является таковым, и у него будет вызван метод join)
+     * Массивы (аргумент будет привен к массиву, если не является таковым, и у него будет вызван метод join)
      *  a - элементы через запятую + побел ', '
      *  as:str - конкатенация элементов указаной подстрокой (по умолчанию запятая)
      *
@@ -252,17 +251,17 @@
      * fs(.....)
      *
      * @param {String} format
-     * @param {*...} args
-     * @param {Object} customMods
+     * @param {*|Array<*>} args
+     * @param {Object} [customMods]
      */
     scope.fs = function (format, args, customMods) {
 
         var mods = {
             "s":  function(i){ return String(i); },
             "sU": function(i){ return String(i).toUpperCase(); },
-            "su": function(i){ return String(i).replace(/\b(\w)/ig, function(a, g){ return g.toUpperCase(); }) },
+            "su": function(i){ return String(i).replace(/(?:^|\s)[a-zа-яё]/ig, function(a){ return a.toUpperCase(); }); },
             "sL": function(i){ return String(i).toLowerCase(); },
-            "sl": function(i){ return String(i).replace(/\b(\w)/ig, function(a, g){ return g.toLowerCase(); }); },
+            "sl": function(i){ return String(i).replace(/(?:^|\s)[a-zа-яё]/ig, function(a, g){ return g.toLowerCase(); }); },
             "sr": function(i, f, t){ return String(i).replace(new RegExp(f, "ig"), t); },
 
             "d": function(i){ return Number(i); },
@@ -280,13 +279,12 @@
             "j":  function(i){ return JSON.stringify(~["Object", "Array"].indexOf(i.constructor.name) ? i : [i]); }
         };
 
-        args = [].slice.call(arguments, 1);
+        args = args instanceof Array ? args : [args];
 
         each(customMods || {}, function(mod, key){ mods[key] = mod; });
 
         return format.replace(/%(\w+)|(?:\$\{(\w+):?(.*?)\})/gi, function(a, n1, n2, ag){
-            a = n1 || n2;
-            return a in mods ? mods[a].apply(scope, [args.shift()].concat(ag ? ag.split(/\s*,\s*/) : [])) : a;
+            return a = n1 || n2, a in mods ? mods[a].apply(scope, [args.shift()].concat(ag ? ag.split(/\s*,\s*/) : [])) : a;
         });
     };
 
