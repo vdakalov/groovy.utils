@@ -209,5 +209,86 @@
         return list;
     };
 
+    /**
+     * Выводит строку отформатированную в соответствии с указанным форматом
+     * принцип работы похож на функции printf в php или System.out.format в java, только
+     * адаптированный под требования javascript: в троке, в нужные места вставляются ключи
+     * которы заменяются функцией на соответствующие значения из переданных аргументов.
+     *
+     * Синтаксис ключей
+     * %s - без аргументов
+     * ${su} - без агрументов
+     * ${sr:foo,bar} - с аргументами
+     *
+     * Строковые (интерпретируют аргумент как строку)
+     *  s  - отобразить как есть
+     *  sU - привести к верхнему регистру
+     *  su - привести первый символ каждого слова к верхнему регистру
+     *  sL - привести к нижнему регистру
+     *  sl - привести первый символ каждого слова к нижнему регистру
+     *  seu - кодировать функцией encodeURIComponent
+     *  sdu - декодировать функцией decodeURIComponent
+     *  sr:from,to - заменить подстроку указанную в первом параметре на подстроку указанную во втором
+     *
+     * Числовые (аргумент интерпретируется как число)
+     *  d - отобразить как есть
+     *  df:num - добавить дробную часть указанной длины (два, по умолчанию)
+     *  de:num - научная нотация в нижнем регистре (в параметре кол-во знаков после запятой)
+     *  dE:num - научная нотация в верхнем регистре (в параметре кол-во знаков после запятой)
+     *  dh - как шестнадцатиричное число в нижнем регистре
+     *  dH - как шестнадцатиричное число в верхнем регистре
+     *  db - как бинарное число
+     *  do - как восьмиричное число
+     *  dn:from,to - переводит в из указанной системы в указанную систему счисления (по умлочанию 10)
+     *
+     * Массивы (аргемент будет привен к массиву, если не является таковым, и у него будет вызван метод join)
+     *  a - элементы через запятую + побел ', '
+     *  as:str - конкатенация элементов указаной подстрокой (по умолчанию запятая)
+     *
+     * JSON (аргумент будет прведен к массиву, если не является массивом или объктом)
+     *  j - будет использована функция JSON.stringify
+     *
+     * @example
+     * fs(.....)
+     *
+     * @param {String} format
+     * @param {*...} args
+     * @param {Object} customMods
+     */
+    scope.fs = function (format, args, customMods) {
+
+        var mods = {
+            "s":  function(i){ return String(i); },
+            "sU": function(i){ return String(i).toUpperCase(); },
+            "su": function(i){ return String(i).replace(/\b(\w)/ig, function(a, g){ return g.toUpperCase(); }) },
+            "sL": function(i){ return String(i).toLowerCase(); },
+            "sl": function(i){ return String(i).replace(/\b(\w)/ig, function(a, g){ return g.toLowerCase(); }); },
+            "sr": function(i, f, t){ return String(i).replace(new RegExp(f, "ig"), t); },
+
+            "d": function(i){ return Number(i); },
+            "df": function(i, num){ return Number(i).toFixed(num ? num : 2); },
+            "de": function(i, num){ return Number(i).toExponential(num ? num : 0) },
+            "dE": function(i, num){ return Number(i).toExponential(num ? num : 0).toUpperCase(); },
+            "dh": function(i){ return Number(i).toString(16); },
+            "dH": function(i){ return Number(i).toString(16).toUpperCase(); },
+            "db": function(i){ return Number(i).toString(2); },
+            "do": function(i){ return Number(i).toString(8); },
+            "dn": function(i, from, to){ return parseInt(i, from ? from : 10).toString(to ? to : 10); },
+
+            "a": function(i){ return (i instanceof Array ? i : [i]).join(", "); },
+            "as": function(i, str){ return (i instanceof Array ? i : [i]).join(str ? str : ","); },
+            "j":  function(i){ return JSON.stringify(~["Object", "Array"].indexOf(i.constructor.name) ? i : [i]); }
+        };
+
+        args = [].slice.call(arguments, 1);
+
+        each(customMods || {}, function(mod, key){ mods[key] = mod; });
+
+        return format.replace(/%(\w+)|(?:\$\{(\w+):?(.*?)\})/gi, function(a, n1, n2, ag){
+            a = n1 || n2;
+            return a in mods ? mods[a].apply(scope, [args.shift()].concat(ag ? ag.split(/\s*,\s*/) : [])) : a;
+        });
+    };
+
 }(this));
 
