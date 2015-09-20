@@ -41,7 +41,8 @@
 
     /**
      * Вызовет обработчик для каждого элемента коллекции в заданном
-     * контексте и вернет исходный объект
+     * контексте и вернет исходный объект. Если обработчик вернет `false`,
+     * перебор элементов прервется и функция вернет исходный объект.
      *
      * @example
      * // выведет: 1, "0", 0
@@ -86,7 +87,7 @@
                         obj instanceof HTMLCollection ||
                         obj instanceof NodeList ||
                         obj instanceof FileList
-                    ))) { handler.call(context, obj[name], name, index++); }
+                    ))) { if (handler.call(context, obj[name], name, index++) === false) { break; } }
             }
         }
         return obj;
@@ -132,10 +133,6 @@
     /**
      * Вызовет обработчик для каждого элемента коллекции и присвоит
      * результат этого вызова в элемент
-     *
-     * Cause a handler for each element and assigns the result of a call
-     * handler in the value of the item. Not only if the handler does
-     * not return false, in this case, the element will be removed
      *
      * @example
      * // returns: [4]
@@ -215,9 +212,9 @@
      * адаптированный под требования javascript.
      *
      * Синтаксис ключей
-     * %s - без аргументов
-     * ${su} - без агрументов
-     * ${sr:foo,bar} - с аргументами
+     *  %s - без аргументов
+     *  ${su} - без агрументов
+     *  ${sr:foo,bar} - с аргументами
      *
      * Строковые (интерпретируют аргумент как строку)
      *  s  - отобразить как есть
@@ -246,9 +243,6 @@
      *
      * JSON (аргумент будет прведен к массиву, если не является массивом или объктом)
      *  j - будет использована функция JSON.stringify
-     *
-     * @example
-     * fs(.....)
      *
      * @param {String} format
      * @param {*|Array<*>} args
