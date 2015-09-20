@@ -167,6 +167,28 @@ describe("each", function(){
 
     });
 
+    describe("jQuery", function(){
+
+        it("Number of iterations", function(){
+
+            var elements = $([
+                document.createElement("a"),
+                document.createElement("b"),
+                document.createElement("p")
+            ]);
+
+            each(elements, handler);
+
+            expect(handler.calls.count()).toEqual(elements.length);
+
+            expect(handler.calls.argsFor(0)).toEqual([elements.get(0), "0", 0]);
+            expect(handler.calls.argsFor(1)).toEqual([elements.get(1), "1", 1]);
+            expect(handler.calls.argsFor(2)).toEqual([elements.get(2), "2", 2]);
+
+        });
+
+    });
+
     describe("not collection", function(){
 
         it("undefined", function(){

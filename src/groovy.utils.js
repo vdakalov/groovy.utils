@@ -82,12 +82,15 @@
 
         if (typeof obj === 'object' && obj !== null && typeof handler === 'function') {
             for (name in obj) {
-                if (obj.hasOwnProperty(name) && (name !== 'length' || !(
-                        obj instanceof Array ||
-                        obj instanceof HTMLCollection ||
-                        obj instanceof NodeList ||
-                        obj instanceof FileList
-                    ))) { if (handler.call(context, obj[name], name, index++) === false) { return obj; } }
+                if (obj.hasOwnProperty(name) && (
+                        ['length', 'prevObject', 'context', 'selector'].indexOf(name) === -1 ||
+                        !(  obj instanceof Array ||
+                            obj instanceof HTMLCollection ||
+                            obj instanceof NodeList ||
+                            obj instanceof FileList ||
+                            ("jQuery" in window && obj instanceof window.jQuery) ||
+                            ("$" in window && obj instanceof window.$))
+                    )) { if (handler.call(context, obj[name], name, index++) === false) { return obj; } }
             }
         }
         return obj;
