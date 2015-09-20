@@ -19,7 +19,7 @@ myCollectionEach(function(value, key, index){ /* ... */ });
 ```
 
 ## Collection
-В документации под коллекцией подразумевается `Array`, `Object`, `FileList`, `HTMLCollection` или `NodeList`. С этими объектами функции работают правильно. Список будет дополняться.
+В документации под коллекцией подразумевается `Array`, `Object`, `FileList`, `HTMLCollection`, `jQuery` или `NodeList`. С этими объектами функции работают правильно. Список будет дополняться.
 
 ## each
 `Collection each([collection, context], handler)`
