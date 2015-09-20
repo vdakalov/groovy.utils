@@ -87,7 +87,7 @@
                         obj instanceof HTMLCollection ||
                         obj instanceof NodeList ||
                         obj instanceof FileList
-                    ))) { if (handler.call(context, obj[name], name, index++) === false) { break; } }
+                    ))) { if (handler.call(context, obj[name], name, index++) === false) { return obj; } }
             }
         }
         return obj;

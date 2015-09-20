@@ -4,6 +4,7 @@
   "author": "Viktor Dakalov <atlantidu@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "karma": "^0.13.9",
     "karma-jasmine": "^0.3.5"
   }
 }
