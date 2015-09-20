@@ -249,40 +249,35 @@
      *
      * @param {String} format
      * @param {*|Array<*>} args
-     * @param {Object} [customMods]
      */
-    scope.fs = function (format, args, customMods) {
-
-        var mods = {
-            "s":  function(i){ return String(i); },
-            "sU": function(i){ return String(i).toUpperCase(); },
-            "su": function(i){ return String(i).replace(/(?:^|\s)[a-zа-яё]/ig, function(a){ return a.toUpperCase(); }); },
-            "sL": function(i){ return String(i).toLowerCase(); },
-            "sl": function(i){ return String(i).replace(/(?:^|\s)[a-zа-яё]/ig, function(a, g){ return g.toLowerCase(); }); },
-            "sr": function(i, f, t){ return String(i).replace(new RegExp(f, "ig"), t); },
-
-            "d": function(i){ return Number(i); },
-            "df": function(i, num){ return Number(i).toFixed(num ? num : 2); },
-            "de": function(i, num){ return Number(i).toExponential(num ? num : 0) },
-            "dE": function(i, num){ return Number(i).toExponential(num ? num : 0).toUpperCase(); },
-            "dh": function(i){ return Number(i).toString(16); },
-            "dH": function(i){ return Number(i).toString(16).toUpperCase(); },
-            "db": function(i){ return Number(i).toString(2); },
-            "do": function(i){ return Number(i).toString(8); },
-            "dn": function(i, from, to){ return parseInt(i, from ? from : 10).toString(to ? to : 10); },
-
-            "a": function(i){ return (i instanceof Array ? i : [i]).join(", "); },
-            "as": function(i, str){ return (i instanceof Array ? i : [i]).join(str ? str : ","); },
-            "j":  function(i){ return JSON.stringify(~["Object", "Array"].indexOf(i.constructor.name) ? i : [i]); }
-        };
-
-        args = args instanceof Array ? args : [args];
-
-        each(customMods || {}, function(mod, key){ mods[key] = mod; });
-
+    scope.fs = function (format, args) {
+        args = Array.prototype.slice.call(arguments, 1);
         return format.replace(/%(\w+)|(?:\$\{(\w+):?(.*?)\})/gi, function(a, n1, n2, ag){
-            return a = n1 || n2, a in mods ? mods[a].apply(scope, [args.shift()].concat(ag ? ag.split(/\s*,\s*/) : [])) : a;
+            return a = n1 || n2, a in scope.fs.mods ? scope.fs.mods[a].apply(scope, [args.shift()].concat(ag ? ag.split(/\s*,\s*/) : [])) : a;
         });
+    };
+
+    scope.fs.mods = {
+        "s":  function(i){ return String(i); },
+        "sU": function(i){ return String(i).toUpperCase(); },
+        "su": function(i){ return String(i).replace(/(?:^|\s)[a-zа-яё]/ig, function(a){ return a.toUpperCase(); }); },
+        "sL": function(i){ return String(i).toLowerCase(); },
+        "sl": function(i){ return String(i).replace(/(?:^|\s)[a-zа-яё]/ig, function(a, g){ return g.toLowerCase(); }); },
+        "sr": function(i, f, t){ return String(i).replace(new RegExp(f, "ig"), t); },
+
+        "d": function(i){ return Number(i); },
+        "df": function(i, num){ return Number(i).toFixed(num ? num : 2); },
+        "de": function(i, num){ return Number(i).toExponential(num ? num : 0) },
+        "dE": function(i, num){ return Number(i).toExponential(num ? num : 0).toUpperCase(); },
+        "dh": function(i){ return Number(i).toString(16); },
+        "dH": function(i){ return Number(i).toString(16).toUpperCase(); },
+        "db": function(i){ return Number(i).toString(2); },
+        "do": function(i){ return Number(i).toString(8); },
+        "dn": function(i, from, to){ return parseInt(i, from ? from : 10).toString(to ? to : 10); },
+
+        "a": function(i){ return (i instanceof Array ? i : [i]).join(", "); },
+        "as": function(i, str){ return (i instanceof Array ? i : [i]).join(str ? str : ","); },
+        "j":  function(i){ return JSON.stringify(~["Object", "Array"].indexOf(i.constructor.name) ? i : [i]); }
     };
 
 }(this));
