@@ -147,7 +147,7 @@
      * @returns {Object|Array} Вернет новый массив или объект с новыми значениями
      */
     scope.collect = function (obj, context, handler) {
-        var isArr, list;
+        var isArr, list, result;
 
         if (arguments.length === 1) {
             handler = obj;
@@ -163,8 +163,8 @@
         list = (isArr = obj instanceof Array) ? [] : {};
 
         scope.each(obj, context, function(value, key, index) {
-            if ((list[key] = handler.call(context, value, key, index)) === false) {
-                isArr ? (list.splice(key, 1)) : (delete list[key]);
+            if ((result = handler.call(context, value, key, index)) === false) {
+                isArr ? (list.push(result)) : (list[key] = result);
             }
         });
 
