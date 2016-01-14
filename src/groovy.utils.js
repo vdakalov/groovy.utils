@@ -163,9 +163,8 @@
         list = (isArr = obj instanceof Array) ? [] : {};
 
         scope.each(obj, context, function(value, key, index) {
-            if ((result = handler.call(context, value, key, index)) === false) {
-                isArr ? (list.push(result)) : (list[key] = result);
-            }
+            result = handler.call(context, value, key, index);
+            isArr ? (list.push(result)) : (list[key] = result);
         });
 
         return list;
