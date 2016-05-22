@@ -1,8 +1,9 @@
 {
   "name": "groovy.utils",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Viktor Dakalov <atlantidu@gmail.com>",
   "license": "ISC",
+  "main": "src/groovy.utils.js",
   "devDependencies": {
     "jquery": "^2.1.4",
     "karma": "^0.13.9",
