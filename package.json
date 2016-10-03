@@ -1,6 +1,6 @@
 {
   "name": "groovy.utils",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "author": "Viktor Dakalov <atlantidu@gmail.com>",
   "license": "ISC",
   "main": "src/groovy.utils.js",
